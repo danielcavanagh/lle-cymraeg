@@ -13,6 +13,10 @@ defmodule LleCymraeg.Locations.Location do
     field :name, :string
     field :postcode, :string
 
+    belongs_to :person, LleCymraeg.People.Person
+    belongs_to :meetup, LleCymraeg.Meetups.Meetup
+    belongs_to :business, LleCymraeg.Businesses.Business
+
     timestamps()
   end
 
@@ -20,6 +24,7 @@ defmodule LleCymraeg.Locations.Location do
   def changeset(%Location{} = location, attrs) do
     location
     |> cast(attrs, [:name, :lat_long, :country_code, :admin_area, :locality, :address_lines, :postcode])
-    |> validate_required([:name, :lat_long, :country_code, :admin_area, :locality, :address_lines, :postcode])
+    |> validate_required([:lat_long, :country_code, :admin_area, :locality, :address_lines])
+    # assocs are ignored as location is fully managed by its owner
   end
 end

@@ -7,8 +7,10 @@ defmodule LleCymraeg.Businesses.Business do
   schema "businesses" do
     field :name, :string, null: false
     field :description, :string
-    field :type_id, :id
-    field :location_id, :id, null: false
+
+    belongs_to :type, LleCymraeg.BusinessTypes.BusinessType
+    has_one :location, LleCymraeg.Locations.Location
+    has_many :languages, LleCymraeg.BusinessLanguages.BusinessLanguage
 
     timestamps()
   end
@@ -16,7 +18,10 @@ defmodule LleCymraeg.Businesses.Business do
   @doc false
   def changeset(%Business{} = business, attrs) do
     business
-    |> cast(attrs, [:name])
-    |> validate_required([:name])
+    |> cast(attrs, [:name, :description, :type_id])
+    |> cast_assoc(:location)
+    |> cast_assoc(:languages)
+    |> assoc_constraint(:type)
+    |> validate_required([:name, :type_id])
   end
 end

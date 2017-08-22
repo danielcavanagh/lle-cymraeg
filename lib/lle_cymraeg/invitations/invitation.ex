@@ -7,8 +7,9 @@ defmodule LleCymraeg.Invitations.Invitation do
   schema "invitations" do
     field :status, InvitationStatus, null: false
     field :type, InvitationType, null: false
-    field :meetup_id, :id, null: false
-    field :person_id, :id, null: false
+
+    belongs_to :meetup, LleCymraeg.Meetups.Meetup
+    belongs_to :person, LleCymraeg.People.Person
 
     timestamps()
   end
@@ -16,7 +17,9 @@ defmodule LleCymraeg.Invitations.Invitation do
   @doc false
   def changeset(%Invitation{} = invitation, attrs) do
     invitation
-    |> cast(attrs, [:type, :status])
-    |> validate_required([:type, :status])
+    |> cast(attrs, [:type, :status, :meetup_id, :person_id])
+    |> assoc_constraint(:meetup)
+    |> assoc_constraint(:person)
+    |> validate_required([:type, :status, :meetup_id, :person_id])
   end
 end

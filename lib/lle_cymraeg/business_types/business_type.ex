@@ -6,7 +6,9 @@ defmodule LleCymraeg.BusinessTypes.BusinessType do
 
   schema "business_types" do
     field :name, :string, null: false
-    field :parent_id, :id
+
+    belongs_to :parent, BusinessType
+    has_many :children, BusinessType
 
     timestamps()
   end
@@ -14,7 +16,8 @@ defmodule LleCymraeg.BusinessTypes.BusinessType do
   @doc false
   def changeset(%BusinessType{} = business_type, attrs) do
     business_type
-    |> cast(attrs, [:name])
+    |> cast(attrs, [:name, :parent_id])
+    |> assoc_constraint(:parent)
     |> validate_required([:name])
   end
 end

@@ -7,8 +7,9 @@ defmodule LleCymraeg.BusinessLanguages.BusinessLanguage do
   schema "business_languages" do
     field :frequency, LanguageFrequency, null: false
     field :proficiency, LanguageProficiency, null: false
-    field :business_id, :id, null: false
-    field :language_id, :id, null: false
+
+    belongs_to :business, LleCymraeg.Businesses.Business
+    belongs_to :language, LleCymraeg.Languages.Language
 
     timestamps()
   end
@@ -16,7 +17,9 @@ defmodule LleCymraeg.BusinessLanguages.BusinessLanguage do
   @doc false
   def changeset(%BusinessLanguage{} = business_language, attrs) do
     business_language
-    |> cast(attrs, [:proficiency, :frequency])
-    |> validate_required([:proficiency, :frequency])
+    |> cast(attrs, [:proficiency, :frequency, :business_id, :language_id])
+    |> assoc_constraint(:business)
+    |> assoc_constraint(:language)
+    |> validate_required([:proficiency, :frequency, :business_id, :language_id])
   end
 end

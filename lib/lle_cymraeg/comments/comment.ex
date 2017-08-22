@@ -6,8 +6,9 @@ defmodule LleCymraeg.Comments.Comment do
 
   schema "comments" do
     field :text, :string, null: false
-    field :person_id, :id, null: false
-    field :meetup_id, :id, null: false
+
+    belongs_to :person, LleCymraeg.People.Person
+    belongs_to :meetup, LleCymraeg.Meetups.Meetup
 
     timestamps()
   end
@@ -15,7 +16,9 @@ defmodule LleCymraeg.Comments.Comment do
   @doc false
   def changeset(%Comment{} = comment, attrs) do
     comment
-    |> cast(attrs, [:text])
-    |> validate_required([:text])
+    |> cast(attrs, [:text, :person_id, :meetup_id])
+    |> assoc_constraint(:person)
+    |> assoc_constraint(:meetup)
+    |> validate_required([:text, :person_id, :meetup_id])
   end
 end

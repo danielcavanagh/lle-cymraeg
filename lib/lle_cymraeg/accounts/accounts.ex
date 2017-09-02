@@ -52,6 +52,7 @@ defmodule LleCymraeg.Accounts do
   def create_account(attrs \\ %{}) do
     %Account{}
     |> Account.changeset(attrs)
+    |> Ecto.Changeset.change(Comeonin.Bcrypt.add_hash(attrs[:password]))
     |> Repo.insert()
   end
 
@@ -100,5 +101,11 @@ defmodule LleCymraeg.Accounts do
   """
   def change_account(%Account{} = account) do
     Account.changeset(account, %{})
+  end
+
+  # Finds an account by email and validates the password
+  def validate(attrs) do
+    Repo.get_by(Account, email: attrs[:email])
+    |> Comeonin.Bcrypt.check_pass(attrs[:password])
   end
 end

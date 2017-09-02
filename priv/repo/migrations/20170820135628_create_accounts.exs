@@ -5,9 +5,9 @@ defmodule LleCymraeg.Repo.Migrations.CreateAccounts do
     AccountRole.create_type
 
     create table(:accounts) do
-      add :role, :account_role, null: false
       add :email, :string, null: false
       add :password_hash, :string, null: false
+      add :role, :account_role, null: false
 
       timestamps()
     end

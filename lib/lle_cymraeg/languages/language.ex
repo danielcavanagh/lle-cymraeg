@@ -3,10 +3,10 @@ defmodule LleCymraeg.Languages.Language do
   import Ecto.Changeset
   alias LleCymraeg.Languages.Language
 
-
   schema "languages" do
-    field :code, :string, null: false
     field :name, :string, null: false
+    field :iso_code, :string, null: false
+    field :ietf_tags, {:array, :string}, null: false
 
     timestamps()
   end
@@ -14,8 +14,8 @@ defmodule LleCymraeg.Languages.Language do
   @doc false
   def changeset(%Language{} = language, attrs) do
     language
-    |> cast(attrs, [:name, :code])
-    |> validate_required([:name, :code])
+    |> cast(attrs, [:name, :iso_code, :ietf_tags])
+    |> validate_required([:name, :iso_code, :ietf_tags])
     |> unique_constraint(:name)
     |> unique_constraint(:code)
   end

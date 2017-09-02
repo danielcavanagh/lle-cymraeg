@@ -5,8 +5,8 @@ defmodule LleCymraeg.Messages.Message do
 
 
   schema "messages" do
-    field :is_read?, :boolean, default: false, null: false
     field :text, :string, null: false
+    field :is_read?, :boolean, default: false, null: false
 
     belongs_to :from, LleCymraeg.People.Person
     belongs_to :to, LleCymraeg.People.Person

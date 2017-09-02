@@ -3,7 +3,6 @@ defmodule LleCymraeg.Accounts.Account do
   import Ecto.Changeset
   alias LleCymraeg.Accounts.Account
 
-
   schema "accounts" do
     field :email, :string, null: false
     field :password_hash, :string, null: false

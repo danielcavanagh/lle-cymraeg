@@ -11,9 +11,9 @@ defmodule LleCymraeg.People.Person do
     field :dob, :date, null: false
     field :is_public?, :boolean, default: false, null: false
     field :travel_time, :integer, null: false
+    field :ui_language_tag, :string
 
     belongs_to :account, LleCymraeg.Accounts.Account
-    belongs_to :ui_language, LleCymraeg.Languages.Language
     has_one :location, LleCymraeg.Locations.Location
     has_many :languages, LleCymraeg.PersonLanguages.PersonLanguage
 
@@ -30,12 +30,11 @@ defmodule LleCymraeg.People.Person do
   @doc false
   def changeset(%Person{} = person, attrs) do
     person
-    |> cast(attrs, [:name, :dob, :bio, :is_public?, :travel_time, :account_id, :ui_language_id])
+    |> cast(attrs, [:name, :dob, :bio, :is_public?, :travel_time, :account_id, :ui_language_tag])
     |> cast_assoc(:location)
     |> cast_assoc(:languages)
     |> assoc_constraint(:account)
-    |> assoc_constraint(:ui_language)
-    |> validate_required([:name, :dob, :bio, :is_public?, :travel_time, :account_id])
+    |> validate_required([:name, :dob, :bio, :is_public?, :travel_time, :account_id, :ui_language_tag])
     |> validate_number(:travel_time, greater_than: 0)
     |> validate_date_in_past(:dob)
   end

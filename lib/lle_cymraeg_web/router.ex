@@ -11,8 +11,13 @@ defmodule LleCymraegWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
-    plug Guardian.Plug.VerifyHeader
+  end
+
+  pipeline :api_authed do
+    plug :accepts, ["json"]
+    plug Guardian.Plug.VerifyHeader, realm: "Bearer"
     plug Guardian.Plug.LoadResource
+    plug Guardian.Plug.EnsureResource, handler: LleCymraegWeb.AuthErrorHandler
   end
 
   scope "/", LleCymraegWeb do
@@ -21,8 +26,16 @@ defmodule LleCymraegWeb.Router do
     get "/", PageController, :index
   end
 
-  scope "/", LleCymraegWeb do
+  scope "/v1", LleCymraegWeb do
     pipe_through :api
+
+    post "/register", AuthController, :register
+    post "/login", AuthController, :login
+    get "/logout", AuthController, :logout
+  end
+
+  scope "/v1", LleCymraegWeb do
+    pipe_through :api_authed
 
     resources "/accounts", AccountController, except: [:new, :edit]
     resources "/businesses", BusinessController, except: [:new, :edit]

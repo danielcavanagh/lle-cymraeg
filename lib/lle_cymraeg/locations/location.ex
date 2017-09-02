@@ -5,13 +5,13 @@ defmodule LleCymraeg.Locations.Location do
 
 
   schema "locations" do
-    field :address_lines, :string, null: false
+    field :address, :string, null: false
     field :admin_area, :string, null: false
     field :country_code, :string, null: false
     field :lat_long, :string, null: false
     field :locality, :string, null: false
-    field :name, :string
     field :postcode, :string
+    field :name, :string
 
     belongs_to :person, LleCymraeg.People.Person
     belongs_to :meetup, LleCymraeg.Meetups.Meetup

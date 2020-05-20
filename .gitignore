@@ -17,3 +17,5 @@ erl_crash.dump
 
 .env
 .envrc
+
+.DS_Store

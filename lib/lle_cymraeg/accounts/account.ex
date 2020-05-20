@@ -4,7 +4,7 @@ defmodule LleCymraeg.Accounts.Account do
   alias LleCymraeg.Accounts.Account
 
   schema "accounts" do
-    field :email, :string, null: false
+    field :account_id, :string, null: false
     field :password_hash, :string, null: false
     field :role, AccountRole, null: false
 
